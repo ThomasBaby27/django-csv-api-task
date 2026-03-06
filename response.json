@@ -1,0 +1,30 @@
+{
+    "total_saved": 3,
+    "total_rejected": 2,
+    "validation_errors": [
+        {
+            "row": {
+                "name": "java",
+                "email": "java@gmail.com",
+                "age": "122"
+            },
+            "errors": {
+                "age": [
+                    "Age must be between 0 and 120."
+                ]
+            }
+        },
+        {
+            "row": {
+                "name": "django",
+                "email": "python@gmail.com",
+                "age": "70"
+            },
+            "errors": {
+                "email": [
+                    "user with this email already exists."
+                ]
+            }
+        }
+    ]
+}
