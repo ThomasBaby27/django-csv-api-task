@@ -5,9 +5,11 @@ import io
 
 class UserCSVUploadTests(APITestCase):
     
+    #we defineing the API endpoint.
     def setUp(self):
         self.url = reverse('user-upload') 
 
+    #This test checking whether valid csv file is uploaded.
     def test_upload_valid_csv(self):
         csv_content = "name,email,age\nAlice,alice@test.com,30\nBob,bob@test.com,25"
         file = io.BytesIO(csv_content.encode('utf-8'))
@@ -16,6 +18,7 @@ class UserCSVUploadTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['total_saved'], 2)
 
+    #This test checking the handling the duplicate email .
     def test_duplicate_email_handling(self):
         csv_content = (
             "name,email,age\n"
@@ -29,6 +32,7 @@ class UserCSVUploadTests(APITestCase):
         self.assertEqual(response.data['total_rejected'], 1)
         self.assertIn("already exists", str(response.data['validation_errors']))
 
+    #This test checking the handling of invalid age.
     def test_invalid_age_constraint(self):
         csv_content = "name,email,age\nOld Man,old@test.com,150"
         file = io.BytesIO(csv_content.encode('utf-8'))
@@ -36,6 +40,7 @@ class UserCSVUploadTests(APITestCase):
         response = self.client.post(self.url, {'file': file}, format='multipart')
         self.assertEqual(response.data['total_rejected'], 1)
 
+    #This test checks if the API rejects files that are not CSVs.
     def test_invalid_file_extension(self):
         file = io.BytesIO(b"name,email,age")
         file.name = 'test.txt' 
